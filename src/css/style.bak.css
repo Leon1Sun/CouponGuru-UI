@@ -1,0 +1,240 @@
+#container {
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: row;
+}
+
+#features {
+  transition: margin 1s;
+  -webkit-transition: margin 1s; /* Safari */
+  padding-left: 30px;
+  padding-right: 30px;
+  width: calc(100% - 160px);
+  border-right: solid 2px #333;
+
+  flex-shrink: 0;
+  flex-basis: calc(100% - 160px);
+
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#features.scrollToLeft {
+  margin-left: calc(100px - 100%);
+  animation-delay: 1s;
+}
+
+#context{
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+#pic{
+  width: 400px;
+}
+#pic img{
+  width: 100%;
+}
+#fHeader {
+  font-family: Libre Baskerville, serif;
+  height: 250px;
+  width: 100%;
+  font-size: 40px;
+  font-weight: 700;
+
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+#fTitles{
+  align-self:flex-end;
+}
+#fDetails {
+  align-self: flex-start;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+ul.featureList {
+  /*width: 100%;*/
+  min-width: 195px;
+  padding: 0;
+  margin-left: 20px;
+}
+
+.featureList li {
+  margin-top: 5px;
+  width: 100%;
+  text-align: right;
+  list-style-type: none;
+  border-top: 2px solid #999;
+}
+
+.detail-container {
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-detail-label {
+  font-size: 28px;
+
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: row;
+  /*justify-content: flex-start;*/
+  align-items: center;
+  justify-content: space-between;
+}
+
+.feature-detail-label-sub {
+  font-size: 22px;
+
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: row;
+  /*justify-content: flex-start;*/
+  align-items: center;
+  justify-content: space-between;
+}
+
+.feature-detail-value {
+  height: 36px;
+  line-height: 36px;
+  font-size: 18px;
+  color: #d60032;
+}
+
+.feature-detail-edit {
+  align-self: flex-end;
+}
+
+.icon-animation {
+
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s; /* Safari */
+  font-size: 15px;
+}
+
+.icon-animation:hover {
+  cursor: pointer;
+  font-size: 25px;
+}
+
+#bar {
+  width: 100px;
+
+  flex-shrink: 0;
+  flex-basis: 100px;
+
+  display: -webkit-flex; /* Safari */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#dashboard {
+  text-align: center;
+  border-left: solid 2px #333;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: calc(100% - 160px);
+
+  flex-shrink: 0;
+  flex-basis: calc(100% - 160px);
+
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items:center;
+
+}
+
+.dashboard-data,.dashboard-chart-list{
+  position: fixed;
+  top:0;
+  opacity: 0;
+  transition: opacity 0.5s;
+  padding-top: 10px;
+}
+
+.dashboard-data.show,.dashboard-chart-list.show{
+  /*animation-delay: 1s;*/
+  opacity: 1;
+}
+ul.dashboard-data-list{
+  padding: 0;
+  width: 100%;
+}
+ul.dashboard-data-list li{
+  font-size: 16px;
+  list-style-type: none;
+  color: #DDD;
+  text-align: left;
+  /*margin-top: 10px;*/
+}
+ul.dashboard-data-list li span{
+  display: inline-block;
+  width: 100%;
+  text-align: right;
+  color: #d60032;
+}
+.dashboard-data{
+  left: 130px;
+}
+.dashboard-chart-list{
+  /*display: -webkit-flex; !* Safari *!*/
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*align-items: flex-end;*/
+  /*position: fixed;*/
+  /*top:0;*/
+  right:30px;
+
+}
+.chartItem:nth-last-child(1){
+  border-bottom:1px solid #DDD ;
+}
+.chartItem{
+  cursor: pointer;
+  text-align: center;
+  border-left: 1px solid #DDD;
+  border-right: 1px solid #DDD;
+  border-top: 1px solid #DDD;
+  padding: 15px;
+  width: 50px;
+}
+.chartItem img{
+  width: 30px;
+}
+.loading{
+  animation:loadingColor 5s linear infinite;
+  -webkit-animation:loadingColor 5s linear infinite; /*Safari and Chrome*/
+}
+
+.dashboard-canvas,.chartContainer{
+  flex-shrink: 0;
+  flex-basis: 100%;
+
+}
+
+@keyframes loadingColor
+{
+  0% {color:#333;}
+  50% {color:#DDD;}
+  100% {color:#333;}
+}
+
+@-webkit-keyframes loadingColor /*Safari and Chrome*/
+{
+  0% {color:#333;}
+  50% {color:#DDD;}
+  100% {color:#333;}
+}

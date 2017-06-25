@@ -1,0 +1,457 @@
+@mixin flex-row {
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: row;
+}
+
+@mixin flex-column {
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin screen($res-min, $res-max) {
+  @media screen and (min-width: $res-min) and (max-width: $res-max) {
+    @content;
+  }
+}
+
+//screen width
+$screen-sm: 767px;
+$screen-lg: 1200px;
+
+//color
+$bgColor: #161319;
+$darkred: #d60032;
+$white: #FFF;
+$grey: #333;
+$grey-light: #DDD;
+$borderColor: $grey;
+$borderColor-light: $grey-light;
+
+$sliderColor: #034698;
+
+//fontSize
+$bodyFontSize: 16px;
+
+//-----use rem----
+
+//----use px ----
+$iconFS: 15px;
+$titleFS: 40px;
+$featureTitleFS: 28px;
+$dashboardListFS: 16px;
+
+//length use rem
+$padding: 30px;
+$dashboardPadding: 10px;
+$barW: 100px;
+$picLogoW: 350px;
+$featureListW: 210px;
+$headerH: 250px;
+$chartIcomDivW: 50px;
+$chartIconW: 30px;
+$featureValueH: 36px;
+
+$dashboardDataListW: 140px;
+$dashboardChartListW: 90px;
+//border
+$borderHeight: 1px;
+$borderHeight-bg: 2px;
+
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+}
+
+//common
+body {
+  margin: 0;
+  overflow: hidden;
+  background-color: $bgColor;
+  color: $white;
+  font-family: HelveticaNeueLT-Bold, Helvetica Neue, Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+html, body, #app, #container {
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  //font-size: $bodyFontSize;
+}
+
+li {
+  list-style-type: none;
+}
+
+#container,#container1 {
+  @include flex-row;
+
+  #features {
+    transition: margin 1s;
+    -webkit-transition: margin 1s; /* Safari */
+    padding-left: $padding;
+    padding-right: $padding;
+    width: calc(100% - #{$barW});
+    border-right: solid $borderHeight-bg $borderColor;
+
+    flex-shrink: 0;
+    flex-basis: calc(100% - #{$barW + $padding * 2});
+
+    @include flex-column;
+    align-items: flex-start;
+
+    &.scrollToLeft {
+      margin-left: calc(#{$barW} - 100%);
+      animation-delay: 1s;
+    }
+
+    #context {
+      @include flex-row;
+      width: 100%;
+      justify-content: space-between;
+
+      #pic {
+        width: $picLogoW;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      #fDetails {
+        @include flex-row;
+
+        align-self: flex-start;
+        flex-wrap: wrap;
+        ul.featureList {
+          width: $featureListW;
+          padding: 0;
+          margin-left: 0.5*$padding;
+          li {
+            margin-top: 5px;
+            padding-top: 5px;
+            width: 100%;
+            text-align: right;
+            border-top: $borderHeight-bg solid $borderColor-light;
+            .detail-container {
+              @include flex-column;
+              .feature-detail-label {
+                font-size: $featureTitleFS;
+
+                @include flex-row;
+                align-items: center;
+                justify-content: space-between;
+              }
+
+              .feature-detail-label-sub {
+                font-size: $featureTitleFS * 0.75;
+
+                @include flex-column;
+                align-items: flex-start;
+                justify-content: space-between;
+              }
+
+              .feature-detail-value {
+                height: $featureValueH;
+                line-height: $featureValueH;
+                font-size: $featureTitleFS * 0.6;
+                color: $darkred;
+              }
+
+              .feature-detail-edit {
+                align-self: flex-end;
+              }
+
+              .icon-animation {
+
+                transition: all 0.5s;
+                -webkit-transition: all 0.5s; /* Safari */
+                font-size: $iconFS;
+                &:hover {
+                  cursor: pointer;
+                  font-size: 1.5 *$iconFS;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    #fHeader {
+      font-family: Libre Baskerville, serif;
+      height: $headerH;
+      width: 100%;
+      font-size: $titleFS;
+      font-weight: 700;
+
+      @include flex-row;
+
+      align-items: center;
+      justify-content: space-between;
+      #fTitles {
+        width: $picLogoW;
+      }
+      #recommendation {
+        align-self: flex-end;
+        .cp-name {
+          width: 300px;
+          font-size: 35px;
+          background-color: $bgColor;
+          color: $grey-light;
+          border-top: 0;
+          border-left: 0;
+          border-right: 0;
+          border-bottom: solid $borderHeight-bg $borderColor;
+          caret-color: $grey-light;
+          &:focus {
+            outline-offset: 0;
+            outline-color: $bgColor;
+          }
+        }
+      }
+    }
+  }
+
+  #bar {
+    width: $barW;
+
+    flex-shrink: 0;
+    flex-basis: $barW;
+
+    @include flex-column;
+
+    align-items: center;
+    justify-content: center;
+
+    .icon-animation {
+
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s; /* Safari */
+      font-size: $iconFS;
+
+      &:hover {
+        cursor: pointer;
+        font-size: $iconFS * 1.5;
+      }
+    }
+
+  }
+
+  #dashboard {
+    text-align: center;
+    border-left: solid $borderHeight-bg $borderColor;
+    padding-left: $padding;
+    padding-right: $padding;
+    width: calc(100% - #{($barW + $padding * 2)});
+
+    flex-shrink: 0;
+    flex-basis: calc(100% - #{$barW + $padding * 2});
+
+    @include flex-column;
+    justify-content: flex-start;
+    align-items: center;
+
+    .loading {
+      animation: loadingColor 5s linear infinite;
+      -webkit-animation: loadingColor 5s linear infinite; /*Safari and Chrome*/
+    }
+
+    .dashboard-canvas, .chartContainer {
+      flex-shrink: 0;
+      flex-basis: 100%;
+
+      //.ready {
+      //  color: $darkred;
+      //}
+      .el-button {
+        background-color: $bgColor;
+        color: $grey-light;
+        border: solid $borderHeight $grey-light;
+        &:hover {
+          color: $darkred;
+          border: solid $borderHeight $darkred;
+        }
+      }
+    }
+    #chartContainer {
+      width: 100%;
+      #chartContext {
+        padding-left: $padding+$dashboardDataListW;
+        //padding-right: $padding+$dashboardDataListW;
+        width: calc(100% - #{$padding+$dashboardDataListW});
+        height: 400px;
+        @include flex-row;
+        flex-wrap: wrap;
+        .chart {
+          width: 50%;
+          height: 50%;
+        }
+      }
+      #featuresControl {
+        @include flex-column;
+        justify-content: center;
+
+        //css hack
+        .el-slider__button-wrapper .el-tooltip, .el-slider__button-wrapper:after, .el-slider__bar {
+          background-color: #37b42c;
+        }
+        .el-slider__button.dragging, .el-slider__button.hover, .el-slider__button:hover {
+          -ms-transform: scale(2);
+          transform: scale(2);
+        }
+        .el-slider__button {
+          width: 15px;
+          height: 15px;
+        }
+      }
+    }
+
+    //.dashboard-chart-list
+    .dashboard-data {
+      position: fixed;
+      top: 0;
+      opacity: 0;
+      transition: opacity 0.5s;
+      padding-top: $dashboardPadding;
+      &.show {
+        /*animation-delay: 1s;*/
+        opacity: 1;
+      }
+    }
+
+    .dashboard-data {
+      max-width: $dashboardDataListW;
+      left: $barW+$padding;
+      ul.dashboard-data-list {
+        padding: 0;
+        width: 100%;
+        li {
+          font-size: $dashboardListFS;
+          color: #DDD;
+          text-align: left;
+
+          span {
+            display: inline-block;
+            width: 100%;
+            text-align: right;
+            color: $darkred;
+          }
+        }
+      }
+    }
+    .dashboard-chart-list {
+      max-width: $dashboardChartListW;
+      right: $padding;
+      .chartItem {
+        //cursor: pointer;
+        text-align: center;
+        border-left: $borderHeight solid $borderColor-light;
+        border-right: $borderHeight solid $borderColor-light;
+        border-top: $borderHeight solid $borderColor-light;
+        padding: $padding/2;
+        width: $chartIcomDivW;
+        img {
+          width: $chartIconW;
+        }
+        &:nth-last-child(1) {
+          border-bottom: $borderHeight solid $borderColor-light;
+        }
+        &.active {
+          div {
+            color: $grey;
+          }
+          background-color: $grey-light;
+        }
+      }
+
+    }
+
+  }
+}
+
+@keyframes loadingColor {
+  0% {
+    color: $grey;
+  }
+  50% {
+    color: $grey-light;
+  }
+  100% {
+    color: $grey;
+  }
+}
+
+@-webkit-keyframes loadingColor /*Safari and Chrome*/
+{
+  0% {
+    color: #333;
+  }
+  50% {
+    color: #DDD;
+  }
+  100% {
+    color: #333;
+  }
+}
+
+@include screen ($screen-sm, $screen-lg) {
+  $featureListW: $featureListW*0.7;
+  $featureTitleFS: $featureTitleFS*0.7;
+  $featureValueH: $featureValueH*0.7;
+  $iconFS: $iconFS*0.7;
+  #fDetails {
+    ul.featureList {
+      width: $featureListW !important;
+      li {
+        .detail-container {
+          .feature-detail-label {
+            font-size: $featureTitleFS !important;
+          }
+
+          .feature-detail-label-sub {
+            font-size: $featureTitleFS  * 0.9 !important;
+          }
+
+          .feature-detail-value {
+            height: $featureValueH !important;
+            line-height: $featureValueH !important;
+            font-size: $featureTitleFS * 0.8 !important;
+
+          }
+          .el-input-number{
+            width: 100% !important;
+          }
+          .icon-animation {
+
+            font-size: $iconFS !important;
+            &:hover {
+              font-size: 1.5 *$iconFS !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.outLeftInRight-transition,
+.fadeOutLeft-transition,
+.fadeInLeft-transition ,#container,#container1{
+  transition: transform .3s ease-in-out;
+}
+/* 进入时的状态，从右开始 */
+.outLeftInRight-enter,
+.fadeInLeft-enter,
+.fadeInLeft-leave {
+  transform: translateX(100%);
+}
+/* 离开时的状态，向左移动 */
+.outLeftInRight-leave,
+.fadeOutLeft-enter,
+.fadeOutLeft-leave {
+  transform: translateX(-100%);
+}
