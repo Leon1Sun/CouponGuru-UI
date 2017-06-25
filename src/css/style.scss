@@ -55,6 +55,8 @@ $featureValueH: 36px;
 
 $dashboardDataListW: 140px;
 $dashboardChartListW: 90px;
+
+$chartContextH: 600px;
 //border
 $borderHeight: 1px;
 $borderHeight-bg: 2px;
@@ -86,7 +88,7 @@ li {
   list-style-type: none;
 }
 
-#container,#container1 {
+#container, #container1 {
   @include flex-row;
 
   #features {
@@ -282,7 +284,7 @@ li {
         padding-left: $padding+$dashboardDataListW;
         //padding-right: $padding+$dashboardDataListW;
         width: calc(100% - #{$padding+$dashboardDataListW});
-        height: 400px;
+        height: $chartContextH;
         @include flex-row;
         flex-wrap: wrap;
         .chart {
@@ -421,7 +423,7 @@ li {
             font-size: $featureTitleFS * 0.8 !important;
 
           }
-          .el-input-number{
+          .el-input-number {
             width: 100% !important;
           }
           .icon-animation {
@@ -435,20 +437,27 @@ li {
       }
     }
   }
-}
 
+  #chartContainer {
+    #chartContext {
+      height: $chartContextH *2/3 !important;
+    }
+  }
+}
 
 .outLeftInRight-transition,
 .fadeOutLeft-transition,
-.fadeInLeft-transition ,#container,#container1{
+.fadeInLeft-transition, #container, #container1 {
   transition: transform .3s ease-in-out;
 }
+
 /* 进入时的状态，从右开始 */
 .outLeftInRight-enter,
 .fadeInLeft-enter,
 .fadeInLeft-leave {
   transform: translateX(100%);
 }
+
 /* 离开时的状态，向左移动 */
 .outLeftInRight-leave,
 .fadeOutLeft-enter,
