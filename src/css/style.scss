@@ -48,7 +48,7 @@ $dashboardPadding: 10px;
 $barW: 100px;
 $picLogoW: 350px;
 $featureListW: 210px;
-$headerH: 250px;
+$headerH: 150px;
 $chartIcomDivW: 50px;
 $chartIconW: 30px;
 $featureValueH: 36px;
@@ -215,6 +215,19 @@ li {
         }
       }
     }
+    #cache{
+      margin-left: 15px;
+      div#history{
+        font-size: 22px;
+      }
+      ul#historyList{
+        padding-left: 0;
+        li{
+          color: $darkred;
+          cursor: pointer;
+        }
+      }
+    }
   }
 
   #bar {
@@ -293,8 +306,25 @@ li {
         }
       }
       #featuresControl {
+        padding-left: $padding+$dashboardDataListW;
+        width: calc(100% - #{$padding+$dashboardDataListW});
         @include flex-column;
         justify-content: center;
+
+        .fcValue{
+          &:nth-child(1){
+            @include flex-row;
+            justify-content: flex-start;
+            .el-slider{
+              width: 200px;
+            }
+          }
+          &:nth-child(2){
+            .slider{
+              width: 500px;
+            }
+          }
+        }
 
         //css hack
         .el-slider__button-wrapper .el-tooltip, .el-slider__button-wrapper:after, .el-slider__bar {

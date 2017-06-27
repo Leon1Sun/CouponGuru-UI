@@ -1,17 +1,64 @@
-$baselineM:10px;
+$baselineM-T:25px;
+$baselineM-B:10px;
 $baselineH:4px;
 $ballH:15px;
 $yellow:yellow;
 $green:green;
 $red:red;
+@mixin transition{
+
+  transition: .2s;
+}
+@mixin zIndex{
+  z-index: 1001;
+}
+@mixin zIndex-g{
+  z-index: 1000;
+}
+@mixin zIndex-r{
+  z-index: 999;
+}
 .slider{
   position: relative;
   width: 100%;
-  margin-top: $baselineM;
-  margin-bottom: $baselineM;
+  margin-top: $baselineM-T;
+  margin-bottom: $baselineM-B;
   height: $baselineH;
   color: #DDD;
+
+
+  div.text{
+    @include transition;
+    @include zIndex;
+    border:0px solid;
+    background-color: rgb(37, 31, 61);
+    //border-radius:$ballH/2;
+    top:-$baselineM-T;
+    min-width: $ballH;
+    height: $ballH;
+    position: absolute;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+  }
+  div.text-r{
+    @include zIndex-r;
+    right: 0;
+    //background-color: $red !important;
+
+  }
+  div.text-g{
+    @include zIndex-g;
+    //background-color: $green !important;
+
+  }
   div.icon-ball{
+    @include zIndex;
+    @include transition;
+    &:hover{
+      transform: scale(1.5);
+    }
     border:0px solid;
     background-color: yellow;
     border-radius:$ballH/2;
@@ -21,15 +68,18 @@ $red:red;
     position: absolute;
   }
   div.icon-ball-r{
+    @include zIndex-r;
       right: 0;
       background-color: $red !important;
 
   }
   div.icon-ball-g{
+    @include zIndex-g;
     background-color: $green !important;
 
   }
   div.alert-line{
+    @include transition;
     //border:1px solid;
     background-color: $yellow;
     //top:-$baselineH;

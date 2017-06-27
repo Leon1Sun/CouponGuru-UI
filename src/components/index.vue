@@ -14,7 +14,7 @@
       </div>
       <div id="context">
         <div id="pic">
-          <img src="../assets/img/whiteWalker.jpg">
+          <img src="../assets/img/eye44.png">
         </div>
         <div id="fDetails">
 
@@ -39,7 +39,8 @@
                                   format="yyyy-MM-dd"
                                   type="month"
                                   placeholder="Start Time"
-                                  @change="monthShow = !monthShow">
+                                  >
+                    <!--@change="monthShow = !monthShow"-->
                   </el-date-picker>
                 </transition>
               </div>
@@ -108,8 +109,8 @@
                 </transition>
                 <transition name="el-zoom-in-bottom">
                   <el-select v-model="vertical" v-show="verticalShow" class="feature-detail-edit"
-                             @change="verticalShow = !verticalShow"
                              placeholder="Value Type">
+                    <!-- @change="verticalShow = !verticalShow" -->
                     <el-option
                       v-for="item in verticals"
                       :key="item.value"
@@ -132,7 +133,7 @@
               </div>
               <div class="detail-container">
                 <div class="feature-detail-label-sub">
-                  <div> - New :</div>
+                  <div> - Pre New :</div>
                 </div>
                 <transition name="el-zoom-in-bottom">
 
@@ -189,8 +190,8 @@
               <div class="detail-container">
                 <div class="feature-detail-label">
                   <div>Test/Control :</div>
-                  <i class="icon-animation" v-bind:class="[!tcShow ? 'el-icon-edit' : 'el-icon-check']"
-                     @click="tcShow = !tcShow"></i>
+                  <!--<i class="icon-animation" v-bind:class="[!tcShow ? 'el-icon-edit' : 'el-icon-check']"-->
+                     <!--@click="tcShow = !tcShow"></i>-->
                 </div>
               </div>
               <div class="detail-container">
@@ -230,6 +231,12 @@
           </ul>
         </div>
       </div>
+      <div id="cache">
+        <div id="histroy">History</div>
+        <ul id="historyList" v-for="his in cache">
+          <li v-on:click="applyLocal(his)">{{his.cpName}}</li>
+        </ul>
+      </div>
     </div>
     <div id="bar" @click="barClick">
       <i class="icon-animation" v-bind:class="[!toLeft ? 'el-icon-d-arrow-right' : 'el-icon-d-arrow-left']"></i>
@@ -248,6 +255,7 @@
   export default {
     name: 'index',
     mounted(){
+        this.cache = JSON.parse(localStorage.getItem('cache'));
     },
     watch: {
       test(newVal, oldVal){
@@ -262,25 +270,50 @@
       },
       FM_new(newVal, oldVal){
         if (newVal && newVal != oldVal) {
-          this.FM_reactivated = 100 - newVal - this.FM_retained;
+            if(!this.injectFlag){
+
+                this.FM_retained = 100 - newVal - this.FM_reactivated;
+                this.injectFlag = true;
+            }
+            else{
+                this.injectFlag = false;
+            }
         }
       },
 
       FM_retained(newVal, oldVal){
         if (newVal && newVal != oldVal) {
-          this.FM_reactivated = 100 - newVal - this.FM_new;
+            if(!this.injectFlag){
+
+                this.FM_reactivated = 100 - newVal - this.FM_new;
+                this.injectFlag = true;
+            }
+            else{
+                this.injectFlag = false;
+            }
+//          this.FM_reactivated = 100 - newVal - this.FM_new;
         }
       },
 
       FM_reactivated(newVal, oldVal){
         if (newVal && newVal != oldVal) {
-          this.FM_new = 100 - newVal - this.FM_retained;
+            if(!this.injectFlag){
+
+
+                this.FM_new = 100 - newVal - this.FM_retained;
+                this.injectFlag = true;
+            }
+            else{
+                this.injectFlag = false;
+            }
+//          this.FM_new = 100 - newVal - this.FM_retained;
         }
       }
     },
     data(){
       let startTime = new Date();
       return {
+          injectFlag:false,
         toLeft: false,
         toLeftDelay: false,
         toLeftDelay2: false,
@@ -335,6 +368,7 @@
         FM_new: 30,
         FM_retained: 30,
         FM_reactivated: 40,
+          cache:[]
 
       }
     },
@@ -374,14 +408,45 @@
         localStorage.setItem('type', this.type);
         localStorage.setItem('value', this.value);
         localStorage.setItem('vertical', this.vertical);
-        localStorage.setItem('test', this.control);
+//        localStorage.setItem('test', this.control);
         localStorage.setItem('FM_new', this.FM_new);
         localStorage.setItem('FM_retained', this.FM_retained);
         localStorage.setItem('FM_reactivated', this.FM_reactivated);
+        let data = {
+            cpName:this.cpName,
+            startTime:this.startTime,
+            type:this.type,
+            value:this.value,
+            vertical:this.vertical,
+            FM_new:this.FM_new,
+            'FM_retained': this.FM_retained,
+        'FM_reactivated': this.FM_reactivated
+        };
+        localStorage.setItem('currentData',JSON.stringify(data));
+        this.saveLocal(data);
+        this.$router.push({path: '/chart'})
 
-        console.log(this.$router.push({path: '/chart'}))
-
-      }
+      },
+        saveLocal:function (data) {
+            let cache = localStorage.getItem("cache");
+            cache = JSON.parse(cache) || [];
+            for(let i=4;i>0;i--){
+                if(cache[i-1]){
+                    cache[i] = cache[i-1];
+                }
+            }
+            cache[0] = data;
+            localStorage.setItem("cache",JSON.stringify(cache))
+        },
+        applyLocal:function (data) {
+             this.startTime = data.startTime;
+            this.type = data.type;
+            this.value = data.value;
+            this.vertical = data.vertical;
+            this.FM_new = data.FM_new;
+            this.FM_retained = data.FM_retained;
+            this.FM_reactivated = data.FM_reactivated;
+        }
     }
   }
 </script>

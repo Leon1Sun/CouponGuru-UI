@@ -100,7 +100,7 @@
           </div>
         </div>
         <div id="featuresControl">
-          <div class="fcValue">Coupon Value : <br>
+          <div class="fcValue"><div>Coupon Value : </div>
             <el-slider
               v-model="value"
               :min="5"
@@ -109,14 +109,16 @@
               show-stops>
             </el-slider>
           </div>
-          <div class="fcValue">UserType(New:{{FM_new}}/Retained:{{FM_retained}}/Reactivated:{{FM_reactivated}}) :
-            <br>
-            <el-slider
-              v-model="FM_range"
-              :format-tooltip="formatTooltip"
-              range
-              :max="100">
-            </el-slider>
+          <div class="fcValue">
+            <div>UserType(New:</div>
+            <div class="slider">
+              <slider
+                      v-model="FM_range"
+                      :format-tooltip="formatTooltip"
+                      range
+                      :max="100">
+              </slider>
+            </div>
           </div>
         </div>
       </div>
@@ -159,8 +161,11 @@
   import JsonData from '../assets/data.json';
   import moment from 'moment';
   import $ from 'jquery';
+  import Slider from "./slider/slider.vue"
+//  import Slider from "./slider/slider";
   export default {
-    name: 'chart',
+      components: {Slider},
+      name: 'chart',
     mounted(){
       // init  canvas
       let cs = this.canvasService = new CanvasService();
@@ -198,74 +203,54 @@
           cs.drawCube(ctx);
         }
       }, 40);
-          this.openChart();
+        this.cpName = localStorage.getItem('cpName');
+        let startTime = localStorage.getItem('startTime');
+        let type = localStorage.getItem('type');this.type = type;
+        let value = localStorage.getItem('value');
+        let vertical = localStorage.getItem('vertical');
+        let fmNew = localStorage.getItem('FM_new');
+        let fmRetained = localStorage.getItem('FM_retained');
+        let fmReactivated = localStorage.getItem('FM_reactivated');
+        setTimeout(()=>{
+            this.chartReady = true;
+            this.openChart(JsonData);
+        },5000);
+//        $.ajax(
+//            {
+//                type:"POST",
+//                url: 'http://10.249.71.186:8080/cpnGuru/cpnPerformance/predict',
+//                data: JSON.stringify({
+//                    time: startTime,
+//                    type: type,
+//                    value: value,
+//                    vertical: vertical,
+//                    fmNew: fmNew,
+//                    fmRetained: fmRetained,
+//                    fmReactivated: fmReactivated,
+//                    test: 80,
+//                    control: 20
+//                }),
+//                headers: {
+//
+//                    'Accept': 'application/json',
+//
+//                    'Content-Type': 'application/json'
+//
+//                },
+//
+//                dataType: "json",
+//                success: function (data) {
+//                    console.log(data);
+//                    this.chartReady = true;
+//                    this.openChart(data);
+//                }
+//            }
+//        );
     },
     watch: {
-      toLeft(newVal, oldVal){
-        if (newVal === true) {
-          setTimeout(() => {
-            this.toLeftDelay = true;
-          }, 500);
-        }
-        else {
-          this.toLeftDelay = false;
-        }
-      },
-      toLeftDelay(newVal, oldVal){
-        if (newVal === true) {
-          setTimeout(() => {
-            this.toLeftDelay2 = true;
-          }, 500);
-        }
-        else {
-          this.toLeftDelay2 = false;
-        }
-      },
-      test(newVal, oldVal){
-        if (newVal && newVal != oldVal) {
-          this.control = 100 - newVal;
-        }
-      },
-      control(newVal, oldVal){
-        if (newVal && newVal != oldVal) {
-          this.test = 100 - newVal;
-        }
-      },
-      FM_new(newVal, oldVal){
-        if (newVal && newVal != oldVal) {
-          this.FM_reactivated = 100 - newVal - this.FM_retained;
-        }
-      },
-
-      FM_retained(newVal, oldVal){
-        if (newVal && newVal != oldVal) {
-          this.FM_reactivated = 100 - newVal - this.FM_new;
-        }
-      },
-
-      FM_reactivated(newVal, oldVal){
-        if (newVal && newVal != oldVal) {
-          this.FM_new = 100 - newVal - this.FM_retained;
-        }
-      },
-      FM_range: {
-        handler: function (val, oldVal) {
-          if (this.toLeft && this.chartShow) {
-            this.FM_new = val[0];
-            this.FM_retained = val[1] - val[0];
-            this.FM_reactivated = 100 - val[1];
-            this.openChart()
-          }
-        },
-        deep: true
-      }
     },
     data(){
-      let startTime = new Date();
       return {
-        toLeft: false,
-        toLeftDelay: false,
-        toLeftDelay2: false,
         chartShow: false,
         loadingOpacity: {opacity: 1},
         chartOpacity: {opacity: 0},
@@ -358,9 +343,9 @@
         }
         return vertical
       },
-      openChart: function () {
+      openChart: function (_data) {
 
-        let data = this.dataFormat();
+        let data = this.dataFormat(_data);
         let startTime_format = moment(this.startTime).format('YYYY-MM');
         this.dashboardListData.roi = data.roi.v[data.roi.d.indexOf(startTime_format)];
         this.dashboardListData.iAB = data.iAB.v[data.iAB.d.indexOf(startTime_format)];
@@ -426,36 +411,7 @@
       },
       barClick: function () {
 
-//          $.ajax(
-//            {
-//              type:"POST",
-//              url: 'http://10.249.75.145:8080/cpnGuru/cpnPerformance/predict',
-//              data: JSON.stringify({
-//                time: this.monthFormat(this.startTime),
-//                type: this.type,
-//                value: this.value,
-//                vertical: this.vertical,
-//                fmNew: this.FM_new,
-//                fmRetained: this.FM_retained,
-//                fmReactivated: this.FM_reactivated,
-//                test: 80,
-//                control: 20
-//              }),
-//              headers: {
-//
-//                'Accept': 'application/json',
-//
-//                'Content-Type': 'application/json'
-//
-//              },
-//
-//              dataType: "json",
-//              success: function (data) {
-//                console.log(data);
-//                _this.chartReady = true;
-//              }
-//            }
-//          );
+
         console.log(this.$router.push({path: '/'}))
 
       },
@@ -466,7 +422,7 @@
         }
         return v;
       },
-      dataFormat: () => {
+      dataFormat: (data) => {
         let json = {
           rr: {
             d: [],
@@ -491,7 +447,7 @@
         };
         let items = ['rr', 'roi', 'iGMB', 'iAB'];
         for (let i = 0; i < items.length; i++) {
-          let item = JsonData[items[i]];
+          let item = data[items[i]];
           for (let dText in item) {
             let date = moment(dText).format('YYYY-MM');
             let value = item[dText];

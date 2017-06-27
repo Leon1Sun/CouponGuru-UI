@@ -1,10 +1,10 @@
 <template>
-    <div class="slider" style="margin-left: 30px">
+    <div class="slider">
 
 
-        <!--<div class="el-slider__runway"-->
-        <!--:class="{ 'show-input': showInput, 'disabled': disabled }"-->
-        <!--ref="slider">-->
+        <div class="text" v-bind:style="ball1Left">{{toFix(tempTouchValue)}}</div>
+        <div class="text text-g" v-bind:style="ball2Left">{{toFix(tempTouchValue1)}}</div>
+        <div class="text text-r">{{toFix(100 - tempTouchValue - tempTouchValue1)}}</div>
         <div class="alert-line " v-bind:style="line1Width"></div>
         <div class="alert-line alert-line-g" v-bind:style="line2Width"></div>
         <div class="alert-line alert-line-r" v-bind:style="line3Width"></div>
@@ -23,16 +23,12 @@
              v-model="thirdValue"
              ref="button2">
         </div>
-        <div style="position: fixed;left: 20px;top:60px;">111cmd:{{firstValue}}</div>
+        <!--<div style="position: fixed;left: 20px;top:60px;">111cmd:{{firstValue}}</div>-->
     </div>
     <!--</div>-->
 </template>
 
 <script type="text/babel">
-    //  import ElInputNumber from 'element-ui/packages/input-number';
-    //  import SliderButton from './button.vue';
-    //  import { getStyle } from 'element-ui/src/utils/dom';
-    //  import Emitter from 'element-ui/src/mixins/emitter';
     import $ from 'jquery';
     export default {
         name: 'Slider',
@@ -110,13 +106,8 @@
         watch: {},
 
         methods: {
-            valueChanged() {
-                if (this.range) {
-                    return ![this.minValue, this.maxValue]
-                        .every((item, index) => item === this.oldValue[index]);
-                } else {
-                    return this.value !== this.oldValue;
-                }
+            toFix(val){
+                return val.toFixed(0);
             },
             setValues() {
                 const val = this.value;
@@ -181,6 +172,8 @@
             },
             bindTouchEvent(index){
                 let width = $(this.$el).width();
+                console.log("width",$(this.$el).width())
+                console.log("innerWidth",$(this.$el).innerWidth())
                 let startX = null;
                 let $el = $(this.$el).find('.icon-ball')[0];
                 let _this = this;
@@ -198,13 +191,14 @@
                     _this.last_cmd = 'touching';
                     let length = e.touches[0].clientX - startX;
                     startX = e.touches[0].clientX;
-                    let left = this.tempTouchValue;
+                    let left = this.tempTouchValue * 1.000;
                     left += length * 1.000 / width * 100;
 
                     console.log('touch  left 1:  ' + _this.tempTouchValue);
+                    console.log('touch  length 1:  ' + length);
 
                     this.tempTouchValue1 = _this.tempTouchValue1 - (left - _this.tempTouchValue);
-                    console.log('touch  left 2:  ' + this.tempTouchValue1);
+//                    console.log('touch  left 2:  ' + this.tempTouchValue1);
                     this.tempTouchValue = (left > 0) ? left : 0;
                     this.ball1Left = {left: (this.tempTouchValue || 0) + '%'}
                     //ball 2 to left
