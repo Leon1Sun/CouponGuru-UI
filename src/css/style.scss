@@ -320,6 +320,17 @@ li {
             }
           }
           &:nth-child(2){
+            text-align: left;
+            //@include flex-row;
+            .new{
+              color:#3fc1c9
+            }
+            .retain{
+              color: #F5f5f5;
+            }
+            .reactivated{
+              color:#fc5185;
+            }
             .slider{
               width: 500px;
             }

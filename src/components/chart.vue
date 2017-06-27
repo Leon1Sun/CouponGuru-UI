@@ -101,16 +101,13 @@
         </div>
         <div id="featuresControl">
           <div class="fcValue"><div>Coupon Value : </div>
-            <el-slider
-              v-model="value"
-              :min="5"
-              :max="20"
-              :step="5"
-              show-stops>
-            </el-slider>
+            <el-input-number class="feature-detail-edit" v-model="value"
+                             :step="5"></el-input-number>
           </div>
           <div class="fcValue">
-            <div>UserType(New:</div>
+            <div>UserType&nbsp;&nbsp;<span  class="new">New : {{FM_new}}</span>
+              <span  class="retain">Retain : {{FM_retained}}</span>
+              <span  class="reactivated">Reactivated : {{FM_reactivated}}</span></div>
             <div class="slider">
               <slider
                       v-model="FM_range"
